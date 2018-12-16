@@ -1,6 +1,7 @@
+import os
 from django.conf import settings
 from django.db import models
-
+from django.utils.text import slugify
 from cfehome.aws.utils import AWS
 
 User = settings.AUTH_USER_MODEL
@@ -23,11 +24,25 @@ class S3File(models.Model):
     updated     = models.DateTimeField(auto_now=True)# any changes
     timestamp   = models.DateTimeField(auto_now_add=True)# when added
     
+    def get_file_ext(self):
+        return os.path.splitext(self.key)[1] # path/to/file/upload.png - > path/to/file/upload, .png
+
+    def get_filename(self):
+        custom = self.name
+        if custom:
+            ext = self.get_file_ext() # .png
+            if custom.endswith(ext):
+                custom, ext = os.path.splitext(custom) # this is-my-file.png
+            custom = slugify(custom)
+            custom = f'{custom}{ext}' # this-is-my-file.png
+            return custom
+        return os.path.basename(self.key) 
 
     def get_download_url(self):
         key = self.key
+        name = self.get_filename()
         botocfe = AWS()
-        return botocfe.get_download_url(key=key, force_download=True, filename='abc.png') #, expires_in=10)
+        return botocfe.get_download_url(key=key, force_download=True, filename=name) #, expires_in=10)
 
 
 
