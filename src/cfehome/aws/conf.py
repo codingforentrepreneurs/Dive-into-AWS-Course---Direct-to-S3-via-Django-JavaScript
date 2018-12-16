@@ -45,7 +45,7 @@ AWS_S3_REGION_NAME = 'us-east-1'
 AWS_S3_CUSTOM_DOMAIN = 'static.growthfromzero.com'
 
 # Direct Downloads 
-AWS_OBJECT_DOWNLOAD_HOURS = '10'
+AWS_OBJECT_DOWNLOAD_HOURS = 10
 
 
 
