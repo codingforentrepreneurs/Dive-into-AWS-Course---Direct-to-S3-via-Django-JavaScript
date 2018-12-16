@@ -20,8 +20,9 @@ class UploadView(TemplateView):
 
 class UploadPolicyView(View):
     def get(self, request, *args, **kwargs):
+        key = request.GET.get('key', 'unknown.jpg')
         botocfe = AWS()
-        presigned_data = botocfe.presign_post_url(key='not-real.jpg')
+        presigned_data = botocfe.presign_post_url(key=key)
         return JsonResponse(presigned_data)
 
 

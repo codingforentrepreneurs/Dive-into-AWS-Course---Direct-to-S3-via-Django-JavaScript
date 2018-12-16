@@ -13,6 +13,7 @@ django-crispy-forms = "*"
 pillow = "*"
 django-storages = "*"
 boto3 = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"
