@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 
+from cfehome.aws.utils import AWS
 
 User = settings.AUTH_USER_MODEL
 
@@ -22,3 +23,17 @@ class S3File(models.Model):
     updated     = models.DateTimeField(auto_now=True)# any changes
     timestamp   = models.DateTimeField(auto_now_add=True)# when added
     
+
+    def get_download_url(self):
+        key = self.key
+        botocfe = AWS()
+        return botocfe.get_download_url(key=key) #, expires_in=10)
+
+
+
+
+
+
+
+
+
