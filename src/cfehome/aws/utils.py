@@ -76,7 +76,7 @@ class AWS:
             self.s3_session = s3_session
         return self.s3_session
 
-    def get_download_url(self, key=None, expires_in=AWS_OBJECT_DOWNLOAD_HOURS):
+    def get_download_url(self, key=None, force_download=True, filename=None, expires_in=AWS_OBJECT_DOWNLOAD_HOURS):
         '''
         For any key, grab a signed url, that expires
         '''
@@ -85,11 +85,20 @@ class AWS:
         s3_client = self.get_s3_client()
         if s3_client is None:
             return ""
+
+        download_args = {}
+        if force_download:
+            download_args = {
+                'ResponseContentType': 'application/force-download'
+            }
+            if filename is not None:
+                download_args['ResponseContentDisposition'] = f'attachment; filename="{filename}"'
         url = s3_client.generate_presigned_url(
                 ClientMethod='get_object',
                 Params = {
                     'Bucket': self.bucket,
-                    'Key': key
+                    'Key': key,
+                    **download_args
                 },
                 ExpiresIn=datetime.timedelta(hours=expires_in).total_seconds()
                 )

@@ -27,7 +27,7 @@ class S3File(models.Model):
     def get_download_url(self):
         key = self.key
         botocfe = AWS()
-        return botocfe.get_download_url(key=key) #, expires_in=10)
+        return botocfe.get_download_url(key=key, force_download=True, filename='abc.png') #, expires_in=10)
 
 
 
