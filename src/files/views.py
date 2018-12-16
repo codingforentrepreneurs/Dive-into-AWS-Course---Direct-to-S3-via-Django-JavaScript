@@ -1,4 +1,5 @@
 from django.views import View
+from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 # Create your views here.
@@ -12,3 +13,6 @@ class DownloadView(View):
             raise Http404
         url  = file_obj.get_download_url()
         return HttpResponseRedirect(url)
+
+class UploadView(TemplateView):
+    template_name = 'upload.html'

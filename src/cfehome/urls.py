@@ -16,13 +16,16 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from files.views import DownloadView
+from files.views import DownloadView, UploadView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^files/(?P<id>\d+)/download/$', DownloadView.as_view()), # 1.11
     #re_path(r'^files/(?P<id>\d+)/download/$', DownloadView.as_view()), # 2.0 +
     #path('files/<int:id>/download/$', DownloadView.as_view())
+    url(r'^upload/$', UploadView.as_view()), # 1.11
+    #re_path(r'^upload/$', UploadView.as_view()), # 2.0 +
+    #path('upload/', UploadView.as_view()), # 2.0 +
 ]
 
 
