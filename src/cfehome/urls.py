@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from files.views import DownloadView, UploadView
+from files.views import DownloadView, UploadView, UploadPolicyView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -26,6 +26,10 @@ urlpatterns = [
     url(r'^upload/$', UploadView.as_view()), # 1.11
     #re_path(r'^upload/$', UploadView.as_view()), # 2.0 +
     #path('upload/', UploadView.as_view()), # 2.0 +
+
+    url(r'^upload/policy/$', UploadPolicyView.as_view()), # 1.11
+    #re_path(r'^upload/policy/$', UploadPolicyView.as_view()), # 2.0 +
+    #path('upload/policy/', UploadPolicyView.as_view()), # 2.0 +
 ]
 
 

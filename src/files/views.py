@@ -1,9 +1,9 @@
 from django.views import View
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, JsonResponse
 # Create your views here.
-
+from cfehome.aws.utils import AWS
 from .models import S3File
 
 class DownloadView(View):
@@ -16,3 +16,14 @@ class DownloadView(View):
 
 class UploadView(TemplateView):
     template_name = 'upload.html'
+
+
+class UploadPolicyView(View):
+    def get(self, request, *args, **kwargs):
+        botocfe = AWS()
+        presigned_data = botocfe.presign_post_url(key='not-real.jpg')
+        return JsonResponse(presigned_data)
+
+
+
+
