@@ -20,7 +20,16 @@ class UploadView(TemplateView):
 
 class UploadPolicyView(View):
     def get(self, request, *args, **kwargs):
-        key = request.GET.get('key', 'unknown.jpg')
+        #key = request.GET.get('key', 'unknown.jpg')
+        #botocfe = AWS()
+        #presigned_data = botocfe.presign_post_url(key=key)
+        return JsonResponse({"detail": "Method not allowed"}, status=403)
+
+    def post(self, request, *args, **kwargs):
+        """
+        Requires Security
+        """
+        key = request.POST.get('key', 'unknown.jpg')
         botocfe = AWS()
         presigned_data = botocfe.presign_post_url(key=key)
         return JsonResponse(presigned_data)
