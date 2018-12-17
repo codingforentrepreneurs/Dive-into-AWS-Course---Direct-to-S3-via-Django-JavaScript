@@ -1,3 +1,4 @@
+parse_git_log.py
 .DS_Store
 *.sublime-project
 *sublime-workspace
