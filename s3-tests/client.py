@@ -6,7 +6,7 @@ import requests
 # post_data = botocfe.presign_post_url(key=key)
 
 key = 'cfe-tests/screen_shot.png'
-policy_url = f'http://127.0.0.1:8000/upload/policy/?key={key}'
+policy_url = f'http://127.0.0.1:8000/upload/policy/'
 post_data = None
 r = requests.post(policy_url)
 if r.status_code in range(200, 299):
