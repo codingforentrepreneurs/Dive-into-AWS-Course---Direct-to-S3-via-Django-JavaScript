@@ -1,8 +1,11 @@
 from django.views import View
 from django.views.generic import TemplateView
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404, JsonResponse
-# Create your views here.
+from django.utils.decorators import method_decorator
+
+
 from cfehome.aws.utils import AWS
 from .models import S3File
 
@@ -18,6 +21,7 @@ class UploadView(TemplateView):
     template_name = 'upload.html'
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class UploadPolicyView(View):
     def get(self, request, *args, **kwargs):
         #key = request.GET.get('key', 'unknown.jpg')
@@ -25,6 +29,7 @@ class UploadPolicyView(View):
         #presigned_data = botocfe.presign_post_url(key=key)
         return JsonResponse({"detail": "Method not allowed"}, status=403)
 
+    
     def post(self, request, *args, **kwargs):
         """
         Requires Security
@@ -33,6 +38,8 @@ class UploadPolicyView(View):
         botocfe = AWS()
         presigned_data = botocfe.presign_post_url(key=key)
         return JsonResponse(presigned_data)
+
+
 
 
 
