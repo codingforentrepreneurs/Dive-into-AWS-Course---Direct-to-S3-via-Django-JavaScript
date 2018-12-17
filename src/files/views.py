@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth import get_user_model
 from django.views import View
 from django.views.generic import TemplateView
@@ -32,12 +33,20 @@ class UploadPolicyView(View):
         #presigned_data = botocfe.presign_post_url(key=key)
         return JsonResponse({"detail": "Method not allowed"}, status=403)
 
-    
+    def put(self, request, *args, **kwargs):
+        #print(request.body)
+        data = json.loads(request.body)
+        key = data.get('key')
+        print(key)
+        qs = S3File.objects.filter(key=key).update(uploaded=True)
+        return JsonResponse({"detail": "Success!"}, status=200)
+
+
     def post(self, request, *args, **kwargs):
         """
         Requires Security
         """
-        print('post', request.POST)
+        #print('post', request.POST)
         name            = request.POST.get('name')
         raw_filename    = request.POST.get('raw_filename')
         filetype        = request.POST.get('filetype')
