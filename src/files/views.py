@@ -37,14 +37,20 @@ class UploadPolicyView(View):
         """
         Requires Security
         """
+        print('post', request.POST)
+        name            = request.POST.get('name')
+        raw_filename    = request.POST.get('raw_filename')
+        filetype        = request.POST.get('filetype')
+        #print('data', request.data)
         user    = User.objects.first() #cfe user # request.user
         qs      = S3File.objects.filter(user=user)
         count   = qs.count() + 1
-        key     = f'users/{user.id}/files/{count}/filename.png'
+        key     = f'users/{user.id}/files/{count}/{raw_filename}'
         obj     = S3File.objects.create(
                     user=user,
                     key=key,
-                    name='default.png'
+                    name=name,
+                    filetype=filetype
                 )
         #key = request.POST.get('key', 'unknown.jpg')
         botocfe = AWS()
