@@ -49,29 +49,18 @@ class UploadPolicyView(View):
         """
         Requires Security
         """
-        #print('post', request.POST)
-        # name            = request.POST.get('name')
-        # raw_filename    = request.POST.get('raw_filename')
-        # filetype        = request.POST.get('filetype')
         serializer      = S3FileSerializer(data=request.POST) # ModelForm
         if serializer.is_valid(raise_exception=True):
-            print(serializer.data)
             validated_data  = serializer.validated_data
-            raw_filename    = validated_data.get("raw_filename")
-            name            = validated_data.get('name')
-            filetype        = validated_data.get('filetype')
-            #print('data', request.data)
+            raw_filename    = validated_data.pop("raw_filename")
             user    = User.objects.first() #cfe user # request.user
             qs      = S3File.objects.filter(user=user)
             count   = qs.count() + 1
             key     = f'users/{user.id}/files/{count}/{raw_filename}'
-            obj     = S3File.objects.create(
-                        user=user,
-                        key=key,
-                        name=name,
-                        filetype=filetype
-                    )
-            #key = request.POST.get('key', 'unknown.jpg')
+            obj     = serializer.save(
+                    user=user,
+                    key=key
+                )
             botocfe = AWS()
             presigned_data = botocfe.presign_post_url(key=key)
             presigned_data['object_id'] = obj.id
