@@ -42,3 +42,9 @@ In this section, we'll be implementing our [Reusable Boto3 Utility](https://cfe.
 
 [19 - Update Backend on Successful Upload](../../tree/f392d197439ef897c4675128b5e661299fda68e3/)
 
+[20 - Django Rest Framework Serializer Validation](../../tree/70d3e16e66337ccddd650b0f8b57af4e2514f922/)
+
+[21 - Saving a Model Serializer](../../tree/2365efa4b8878e68609b6a818f52e6e5b4718868/)
+
+[22 - JSON for HTTP Methods.](../../tree/f693aabbbd5603b4f530fb8ad83dad1f68edd21b/)
+
