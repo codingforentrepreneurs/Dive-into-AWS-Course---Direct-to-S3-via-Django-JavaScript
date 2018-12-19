@@ -29,7 +29,7 @@ class UploadView(TemplateView):
 # Django Rest Framework -> REST API course
 
 @method_decorator(csrf_exempt, name='dispatch')
-class UploadPolicyView(View):
+class UploadPolicyView(View): # RESTful API Endpoint
     def get(self, request, *args, **kwargs):
         #key = request.GET.get('key', 'unknown.jpg')
         #botocfe = AWS()
@@ -49,7 +49,8 @@ class UploadPolicyView(View):
         """
         Requires Security
         """
-        serializer      = S3FileSerializer(data=request.POST) # ModelForm
+        data            = json.loads(request.body)
+        serializer      = S3FileSerializer(data=data) # ModelForm
         if serializer.is_valid(raise_exception=True):
             validated_data  = serializer.validated_data
             raw_filename    = validated_data.pop("raw_filename")

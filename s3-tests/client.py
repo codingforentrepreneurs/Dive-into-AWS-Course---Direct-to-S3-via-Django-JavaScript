@@ -13,7 +13,7 @@ data = {
     'raw_filename': 'screen_shot.png',
     'filetype': 'images/png'
 }
-r = requests.post(policy_url, data=data)
+r = requests.post(policy_url, json=data)
 if r.status_code in range(200, 299):
     #print(r.json())
     post_data = r.json()
