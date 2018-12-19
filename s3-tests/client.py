@@ -17,6 +17,7 @@ r = requests.post(policy_url, data=data)
 if r.status_code in range(200, 299):
     #print(r.json())
     post_data = r.json()
+    print(post_data)
 print('policy', r.status_code)
 #print(r.text)
 
@@ -28,22 +29,22 @@ print('policy', r.status_code)
 
 
 # Direct to s3 via Python
-file_path = 'screen.png'
-with open(file_path, 'rb') as data:
-    files = {'file': data}
-    url = post_data['url']
-    request_data = post_data['fields']
-    key = request_data.get("key")
-    r = requests.post(url, data=request_data, files=files)
-    print('upload', r.status_code) # range of 200 299, 204
-    print(key)
-    if r.status_code in range(200, 299):
-        data = {
-            'key': key,
-            'uploaded': True
-        }
-        new_r = requests.put(policy_url, json=data)
-        print(new_r.status_code)
+# file_path = 'screen.png'
+# with open(file_path, 'rb') as data:
+#     files = {'file': data}
+#     url = post_data['url']
+#     request_data = post_data['fields']
+#     key = request_data.get("key")
+#     r = requests.post(url, data=request_data, files=files)
+#     print('upload', r.status_code) # range of 200 299, 204
+#     print(key)
+#     if r.status_code in range(200, 299):
+#         data = {
+#             'key': key,
+#             'uploaded': True
+#         }
+#         new_r = requests.put(policy_url, json=data)
+#         print(new_r.status_code)
 
 
 

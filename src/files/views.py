@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 
 from cfehome.aws.utils import AWS
 from .models import S3File
+from .serializers import S3FileSerializer
 
 User = get_user_model()
 
@@ -24,6 +25,8 @@ class DownloadView(View):
 class UploadView(TemplateView):
     template_name = 'upload.html'
 
+
+# Django Rest Framework -> REST API course
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UploadPolicyView(View):
@@ -47,24 +50,33 @@ class UploadPolicyView(View):
         Requires Security
         """
         #print('post', request.POST)
-        name            = request.POST.get('name')
-        raw_filename    = request.POST.get('raw_filename')
-        filetype        = request.POST.get('filetype')
-        #print('data', request.data)
-        user    = User.objects.first() #cfe user # request.user
-        qs      = S3File.objects.filter(user=user)
-        count   = qs.count() + 1
-        key     = f'users/{user.id}/files/{count}/{raw_filename}'
-        obj     = S3File.objects.create(
-                    user=user,
-                    key=key,
-                    name=name,
-                    filetype=filetype
-                )
-        #key = request.POST.get('key', 'unknown.jpg')
-        botocfe = AWS()
-        presigned_data = botocfe.presign_post_url(key=key)
-        return JsonResponse(presigned_data)
+        # name            = request.POST.get('name')
+        # raw_filename    = request.POST.get('raw_filename')
+        # filetype        = request.POST.get('filetype')
+        serializer      = S3FileSerializer(data=request.POST) # ModelForm
+        if serializer.is_valid(raise_exception=True):
+            print(serializer.data)
+            validated_data  = serializer.validated_data
+            raw_filename    = validated_data.get("raw_filename")
+            name            = validated_data.get('name')
+            filetype        = validated_data.get('filetype')
+            #print('data', request.data)
+            user    = User.objects.first() #cfe user # request.user
+            qs      = S3File.objects.filter(user=user)
+            count   = qs.count() + 1
+            key     = f'users/{user.id}/files/{count}/{raw_filename}'
+            obj     = S3File.objects.create(
+                        user=user,
+                        key=key,
+                        name=name,
+                        filetype=filetype
+                    )
+            #key = request.POST.get('key', 'unknown.jpg')
+            botocfe = AWS()
+            presigned_data = botocfe.presign_post_url(key=key)
+            presigned_data['object_id'] = obj.id
+            return JsonResponse(presigned_data)
+        return JsonResponse({"detail": "Invalid request"}, status=401)
 
 
 

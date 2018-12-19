@@ -15,6 +15,7 @@ django-storages = "*"
 boto3 = "*"
 requests = "*"
 gitpython = "*"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.6"
