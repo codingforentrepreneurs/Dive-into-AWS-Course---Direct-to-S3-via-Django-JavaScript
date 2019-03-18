@@ -16,7 +16,8 @@
 </div>
 
 <script>
-
+var baseURL = 'http://127.0.0.1:8000'
+var policyURL = baseURL + '/upload/policy/'
 var fileInput = document.getElementById('files')
 fileInput.addEventListener('change', fileInputChanged)
 
@@ -64,7 +65,7 @@ function getPolicyAndUpload(fileItem){
         filetype: fileItem.type
     }
     var jsonData = JSON.stringify(data)
-    var policyURL = 'http://127.0.0.1:8000/upload/policy/'
+    
     var xhr = new XMLHttpRequest() // async request
     // how are send it?
 
@@ -124,6 +125,23 @@ function usePolicyAndUpload(fileItem, policyData){
         console.log(xhr.status, xhr.responseText, awsUploadKey)
         // let django know that it's done.
         // put request, key
+        var djHR = new XMLHttpRequest()
+        var method = 'PUT'
+        var djUpdateData = {key: awsUploadKey}
+        var djJsonUpdateData = JSON.stringify(djUpdateData)
+        djHR.open(method, policyURL, true)
+        djHR.setRequestHeader('Content-Type', 'application/json')
+        djHR.onload = function() {
+            if (djHR.status === 200) {
+                // do something
+                alert("Django has been updated")
+            } else {
+                alert("Django update failed")
+            }
+        }
+        
+        djHR.send(djJsonUpdateData)
+
     }
 
     xhr.upload.addEventListener("error", function(event){
