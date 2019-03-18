@@ -38,9 +38,12 @@ class UploadPolicyView(APIView): # RESTful API Endpoint
     
     def put(self, request, *args, **kwargs):
         #print(request.body)
-        data = json.loads(request.body)
-        key = data.get('key')
-        print(key)
+        data = {}
+        try:
+            data            = json.loads(request.body)
+            key             = data.get('key')
+        except:
+            return Response({'detail': "Invalid data"}, status=400)
         qs = S3File.objects.filter(key=key).update(uploaded=True)
         return Response({"detail": "Success!"}, status=200)
 
@@ -49,7 +52,11 @@ class UploadPolicyView(APIView): # RESTful API Endpoint
         """
         Requires Security
         """
-        data            = json.loads(request.body)
+        data = {}
+        try:
+            data            = json.loads(request.body)
+        except:
+            return Response({'detail': "Invalid data"}, status=400)
         serializer      = S3FileSerializer(data=data) # ModelForm
         if serializer.is_valid(raise_exception=True):
             validated_data  = serializer.validated_data
