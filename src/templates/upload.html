@@ -5,7 +5,7 @@
 
 <form method='POST'>
     {% csrf_token %}
-    <input type='file' name='file' id='files' multiple='multiple' />
+    <input type='file' name='file' id='files' multiple='multiple' accept="image/*, video/*, audio/*" />
     <input type='submit' value='Upload' />
 </form>
 
@@ -21,18 +21,38 @@ var fileInput = document.getElementById('files')
 console.log(fileInput)
 fileInput.addEventListener('change', fileInputChanged)
 
+function validateFileType(fileItem) {
+    var fileType = fileItem.type // image/png image/jpeg
+    var rootType = fileType.split("/")[0]
+    console.log(fileType, rootType)
+    switch (rootType) {
+        case 'image':  // rootType === "image"
+            return true
+        case 'video':
+            return true
+        case 'audio':
+            return true
+        default:
+            return false
+    }
+}
+
 function fileInputChanged(){
-    console.log('changed')
+    // console.log('changed')
     var fileInput = document.getElementById('files')
     var filesList = fileInput.files
     var displayListDiv = document.getElementById('displayList')
 
     for (var i = 0; i < filesList.length; i++) {
-        console.log(filesList[i].name)
-        var liItem = document.createElement("li") // <li></li>
-        var content = document.createTextNode(filesList[i].name + " " + filesList[i].size)
-        liItem.appendChild(content)
-        displayListDiv.appendChild(liItem)
+        var fileItem = filesList[i]
+        var isValid = validateFileType(fileItem) 
+        if (isValid){
+            var liItem = document.createElement("li") // <li></li>
+            var content = document.createTextNode(fileItem.name + " " + fileItem.size)
+            liItem.appendChild(content)
+            displayListDiv.appendChild(liItem)
+            // get policy and upload file
+        }
     }
 
 
