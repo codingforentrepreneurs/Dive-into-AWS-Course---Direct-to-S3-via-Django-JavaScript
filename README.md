@@ -48,3 +48,29 @@ In this section, we'll be implementing our [Reusable Boto3 Utility](https://cfe.
 
 [22 - JSON for HTTP Methods.](../../tree/f693aabbbd5603b4f530fb8ad83dad1f68edd21b/)
 
+[23 - Upload Policy View as DRF](../../tree/840a7a3cdbde3277553934aabba1ae1cd7c7bed7/)
+
+[24 - Create API View and Invalid Data](../../tree/5fd45fb25aa558642816056b88848bf13d05edae/)
+
+[25 - Html Upload Form](../../tree/c5bb5869762c561c8be4a474dec35913792dd0f5/)
+
+[26 - Raw Javascript Upload - Files List From Input](../../tree/38b570a78847794867872af284cdf22c73e682e2/)
+
+[27 - Display Items to be Uploaded](../../tree/314401ca05d6143a6b56a94b8aaf8ea633e3ae8b/)
+
+[28 - Raw Javascript Upload - Verify File Type](../../tree/c22c02058e51e3cf9bc1ef7d119d9880b7df4275/)
+
+[29 - Raw Javascript Upload - File Policy via XML Http Request](../../tree/ed41510938c279b7aa5b5731885880bc2c4a2d71/)
+
+[30 - Raw Javascript Upload - new FormData](../../tree/ed41510938c279b7aa5b5731885880bc2c4a2d71/)
+
+[31 - Raw Javascript Upload - Iterate through Dictionary to Generate Form Data](../../tree/d365eb86f4ae66e54261663b9dc8258a2c8c0240/)
+
+[32 - Raw Javascript Upload - Direct to S3](../../tree/5939203e08fc509ce7121cd41928a0a199698915/)
+
+[33- Raw Javascript Upload - Upload Progress](../../tree/53416c60aacc607afbc98ea36ece0eb99499e1f2/)
+
+[34 - Raw Javascript Upload - Update Django](../../tree/3011f873f3fd26f349eeb51cd3bb5c420cf20738/)
+
+[35 - Update Upload Policy View for Multiple Files](../../tree/fd29e62624c1c103d4182bd89dedf4933d208f63/)
+
