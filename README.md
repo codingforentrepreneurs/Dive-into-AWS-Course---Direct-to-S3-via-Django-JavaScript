@@ -74,3 +74,4 @@ In this section, we'll be implementing our [Reusable Boto3 Utility](https://cfe.
 
 [35 - Update Upload Policy View for Multiple Files](../../tree/fd29e62624c1c103d4182bd89dedf4933d208f63/)
 
+[36 - View Progress on HTML](../../tree/0798b20b09b046fa8df9e536fe62b47ad943d1ec)
