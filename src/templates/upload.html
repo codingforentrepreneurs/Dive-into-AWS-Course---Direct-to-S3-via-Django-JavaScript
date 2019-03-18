@@ -49,8 +49,14 @@ function fileInputChanged(){
             var liItem = document.createElement("li") // <li></li>
             var content = document.createTextNode(fileItem.name + " " + fileItem.size)
             liItem.appendChild(content)
+            var listLength = document.querySelectorAll("#displayList li").length
+            var uploadID = listLength  + 1
+            liItem.setAttribute('id', "file-upload-id-" + uploadID)
+
             displayListDiv.appendChild(liItem)
             // get policy and upload file
+            fileItem.uploadID = uploadID
+            fileItem.uploadListElID = "file-upload-id-" + uploadID
             getPolicyAndUpload(fileItem)
         }
     }
@@ -118,7 +124,13 @@ function usePolicyAndUpload(fileItem, policyData){
     xhr.upload.onprogress = function (event) {
         var loaded = event.loaded
         var total = event.total
+        var progress = Math.floor(loaded / total * 100)
         console.log("progress", Math.floor(loaded / total * 100))
+
+        var listElementId = fileItem.uploadListElID
+        var liItem = document.getElementById(listElementId)
+        liItem.innerText = fileItem.name + " " + fileItem.size + " " + progress + "%"
+        liItem.setAttribute('class', 'w-' + progress)
     }
 
     xhr.upload.onload = function() {
@@ -134,7 +146,10 @@ function usePolicyAndUpload(fileItem, policyData){
         djHR.onload = function() {
             if (djHR.status === 200) {
                 // do something
-                alert("Django has been updated")
+                var listElementId = fileItem.uploadListElID
+                var liItem = document.getElementById(listElementId)
+                liItem.innerText = fileItem.name + " " + fileItem.size + " done. 100%"
+                liItem.setAttribute('class', 'w-done')
             } else {
                 alert("Django update failed")
             }
