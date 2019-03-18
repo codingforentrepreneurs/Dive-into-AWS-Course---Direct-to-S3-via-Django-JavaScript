@@ -62,13 +62,15 @@ class UploadPolicyView(APIView): # RESTful API Endpoint
             validated_data  = serializer.validated_data
             raw_filename    = validated_data.pop("raw_filename")
             user    = User.objects.first() #cfe user # request.user
-            qs      = S3File.objects.filter(user=user)
-            count   = qs.count() + 1
-            key     = f'users/{user.id}/files/{count}/{raw_filename}'
+            # qs      = S3File.objects.filter(user=user)
+            # count   = qs.count() + 1
             obj     = serializer.save(
                     user=user,
-                    key=key
+                    key='/'
                 )
+            key     = f'users/{user.id}/files/{obj.id}/{raw_filename}'
+            obj.key = key
+            obj.save()
             botocfe = AWS()
             presigned_data = botocfe.presign_post_url(key=key)
             presigned_data['object_id'] = obj.id
