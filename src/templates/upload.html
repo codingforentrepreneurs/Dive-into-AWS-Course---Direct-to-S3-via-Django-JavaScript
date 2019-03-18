@@ -5,9 +5,22 @@
 
 <form method='POST'>
     {% csrf_token %}
-    <input type='file' name='file'/>
+    <input type='file' name='file' id='files' multiple='multiple' />
     <input type='submit' value='Upload' />
 </form>
 
+<script>
+
+var fileInput = document.getElementById('files')
+console.log(fileInput)
+fileInput.addEventListener('change', fileInputChanged)
+
+function fileInputChanged(){
+    console.log('changed')
+    console.log(fileInput.files)
+}
+
+
+</script>
 
 {% endblock content %}
