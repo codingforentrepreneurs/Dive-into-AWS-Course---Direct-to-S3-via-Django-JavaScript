@@ -7,6 +7,9 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.utils.decorators import method_decorator
 
+from rest_framework import permissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from cfehome.aws.utils import AWS
 from .models import S3File
@@ -28,21 +31,18 @@ class UploadView(TemplateView):
 
 # Django Rest Framework -> REST API course
 
-@method_decorator(csrf_exempt, name='dispatch')
-class UploadPolicyView(View): # RESTful API Endpoint
-    def get(self, request, *args, **kwargs):
-        #key = request.GET.get('key', 'unknown.jpg')
-        #botocfe = AWS()
-        #presigned_data = botocfe.presign_post_url(key=key)
-        return JsonResponse({"detail": "Method not allowed"}, status=403)
-
+# @method_decorator(csrf_exempt, name='dispatch')
+class UploadPolicyView(APIView): # RESTful API Endpoint
+    authentication_classes = []
+    permission_classes = [permissions.AllowAny]
+    
     def put(self, request, *args, **kwargs):
         #print(request.body)
         data = json.loads(request.body)
         key = data.get('key')
         print(key)
         qs = S3File.objects.filter(key=key).update(uploaded=True)
-        return JsonResponse({"detail": "Success!"}, status=200)
+        return Response({"detail": "Success!"}, status=200)
 
 
     def post(self, request, *args, **kwargs):
@@ -65,8 +65,8 @@ class UploadPolicyView(View): # RESTful API Endpoint
             botocfe = AWS()
             presigned_data = botocfe.presign_post_url(key=key)
             presigned_data['object_id'] = obj.id
-            return JsonResponse(presigned_data)
-        return JsonResponse({"detail": "Invalid request"}, status=401)
+            return Response(presigned_data)
+        return Response({"detail": "Invalid request"}, status=401)
 
 
 
