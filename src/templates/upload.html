@@ -87,17 +87,19 @@ function getPolicyAndUpload(fileItem){
 
 }
 
+function constructFormData(policy) {
+    var fd = new FormData() // multipart form
+    var policyFields = policy.fields
+    var objectEntries = Object.entries(policyFields)
+    for ( const [key, value] of  objectEntries){
+        fd.append(key, value)
+    }
+    return fd
+}
 
 function usePolicyAndUpload(fileItem, policyData){
-    var fd = new FormData()
-    var policyFields = policyData.fields
-    console.log(policyFields)
+    var fd = constructFormData(policyData)
     fd.append('file', fileItem)
-    for (var key of fd.keys()){
-        console.log(key)
-        var val = fd.get(key)
-        console.log(val)
-    }
 }
 
 
