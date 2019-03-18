@@ -18,13 +18,11 @@
 <script>
 
 var fileInput = document.getElementById('files')
-console.log(fileInput)
 fileInput.addEventListener('change', fileInputChanged)
 
 function validateFileType(fileItem) {
     var fileType = fileItem.type // image/png image/jpeg
     var rootType = fileType.split("/")[0]
-    console.log(fileType, rootType)
     switch (rootType) {
         case 'image':  // rootType === "image"
             return true
@@ -52,10 +50,54 @@ function fileInputChanged(){
             liItem.appendChild(content)
             displayListDiv.appendChild(liItem)
             // get policy and upload file
+            getPolicyAndUpload(fileItem)
         }
     }
+}
 
 
+function getPolicyAndUpload(fileItem){
+    // data
+    var data = {
+        name: fileItem.name,
+        raw_filename: fileItem.name,
+        filetype: fileItem.type
+    }
+    var jsonData = JSON.stringify(data)
+    var policyURL = 'http://127.0.0.1:8000/upload/policy/'
+    var xhr = new XMLHttpRequest() // async request
+    // how are send it?
+
+    xhr.open("POST", policyURL, true)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // do something
+            var policyResponseData = JSON.parse(xhr.responseText)
+            usePolicyAndUpload(fileItem, policyResponseData)
+            // actual perfom upload for this single file
+
+
+        } else {
+            alert("File upload failed")
+        }
+    }
+    
+    xhr.send(jsonData)
+
+}
+
+
+function usePolicyAndUpload(fileItem, policyData){
+    var fd = new FormData()
+    var policyFields = policyData.fields
+    console.log(policyFields)
+    fd.append('file', fileItem)
+    for (var key of fd.keys()){
+        console.log(key)
+        var val = fd.get(key)
+        console.log(val)
+    }
 }
 
 
