@@ -105,14 +105,33 @@ function usePolicyAndUpload(fileItem, policyData){
     var awsUploadKey = policyData.fields.key
 
     var xhr = new XMLHttpRequest()
-
+    fileItem.xhr = xhr
+    // fileItem.xhr.abort()
+    
 
     xhr.open('POST', awsEndpoint, true)
 
-    xhr.onload = function() {
+    xhr.upload.onloadstart = function (event) {
+        console.log("Uploading started.")
+    }
+    xhr.upload.onprogress = function (event) {
+        var loaded = event.loaded
+        var total = event.total
+        console.log("progress", Math.floor(loaded / total * 100))
+    }
+
+    xhr.upload.onload = function() {
         console.log(xhr.status, xhr.responseText, awsUploadKey)
         // let django know that it's done.
         // put request, key
+    }
+
+    xhr.upload.addEventListener("error", function(event){
+        alert("An error occurred on upload.")
+    })
+    // xhr.abort()
+    xhr.upload.onabort = function (event) {
+        console.log("File aborted")
     }
     xhr.send(fd)
 }
