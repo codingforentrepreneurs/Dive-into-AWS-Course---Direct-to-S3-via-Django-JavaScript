@@ -100,6 +100,21 @@ function constructFormData(policy) {
 function usePolicyAndUpload(fileItem, policyData){
     var fd = constructFormData(policyData)
     fd.append('file', fileItem)
+    var awsEndpoint = policyData.url
+    var objectId = policyData.object_id
+    var awsUploadKey = policyData.fields.key
+
+    var xhr = new XMLHttpRequest()
+
+
+    xhr.open('POST', awsEndpoint, true)
+
+    xhr.onload = function() {
+        console.log(xhr.status, xhr.responseText, awsUploadKey)
+        // let django know that it's done.
+        // put request, key
+    }
+    xhr.send(fd)
 }
 
 
