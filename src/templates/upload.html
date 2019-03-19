@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<form method='POST'>
+<form method='POST' id='uploadForm'>
     {% csrf_token %}
     <input type='file' name='file' id='files' multiple='multiple' accept="image/*, video/*, audio/*" />
     <input type='submit' value='Upload' />
@@ -18,6 +18,7 @@
 <script>
 var baseURL = 'http://127.0.0.1:8000'
 var policyURL = baseURL + '/upload/policy/'
+var crsfToken = document.querySelector('#uploadForm input[name=csrfmiddlewaretoken]').value
 var fileInput = document.getElementById('files')
 fileInput.addEventListener('change', fileInputChanged)
 
@@ -77,6 +78,7 @@ function getPolicyAndUpload(fileItem){
 
     xhr.open("POST", policyURL, true)
     xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('X-CSRFTOKEN', crsfToken)
     xhr.onload = function() {
         if (xhr.status === 200) {
             // do something
@@ -86,6 +88,7 @@ function getPolicyAndUpload(fileItem){
 
 
         } else {
+            console.log(xhr.responseText)
             alert("File upload failed")
         }
     }
@@ -143,6 +146,7 @@ function usePolicyAndUpload(fileItem, policyData){
         var djJsonUpdateData = JSON.stringify(djUpdateData)
         djHR.open(method, policyURL, true)
         djHR.setRequestHeader('Content-Type', 'application/json')
+        djHR.setRequestHeader('X-CSRFTOKEN', crsfToken)
         djHR.onload = function() {
             if (djHR.status === 200) {
                 // do something

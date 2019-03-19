@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.utils.decorators import method_decorator
 
-from rest_framework import permissions
+from rest_framework import authentication, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -33,14 +33,13 @@ class UploadView(TemplateView):
 
 # @method_decorator(csrf_exempt, name='dispatch')
 class UploadPolicyView(APIView): # RESTful API Endpoint
-    authentication_classes = []
-    permission_classes = [permissions.AllowAny]
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
     
     def put(self, request, *args, **kwargs):
         #print(request.body)
-        data = {}
+        data = request.data
         try:
-            data            = json.loads(request.body)
             key             = data.get('key')
         except:
             return Response({'detail': "Invalid data"}, status=400)
@@ -52,18 +51,12 @@ class UploadPolicyView(APIView): # RESTful API Endpoint
         """
         Requires Security
         """
-        data = {}
-        try:
-            data            = json.loads(request.body)
-        except:
-            return Response({'detail': "Invalid data"}, status=400)
+        data            = request.data
         serializer      = S3FileSerializer(data=data) # ModelForm
         if serializer.is_valid(raise_exception=True):
             validated_data  = serializer.validated_data
             raw_filename    = validated_data.pop("raw_filename")
-            user    = User.objects.first() #cfe user # request.user
-            # qs      = S3File.objects.filter(user=user)
-            # count   = qs.count() + 1
+            user    = request.user
             obj     = serializer.save(
                     user=user,
                     key='/'
